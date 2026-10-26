@@ -145,11 +145,12 @@ select.pill { appearance: none; padding-right: 12px; }
 .read-title:hover { background: var(--surface-2); }
 .read-name { display: inline-flex; align-items: center; gap: 4px; max-width: 100%; font-weight: 600; white-space: nowrap; overflow: hidden; }
 .surah-intro { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 4px 0 18px; text-align: center; overflow: hidden; }
-.readerbar { position: fixed; left: 50%; bottom: calc(12px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 36; display: flex; align-items: center; gap: 6px; padding: 5px 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; box-shadow: var(--shadow); }
+/* The bar follows right under the text, and sticks to the bottom of the screen while there is more to scroll */
+.readerbar { position: sticky; bottom: calc(12px + env(safe-area-inset-bottom)); width: fit-content; margin: 16px auto calc(12px + env(safe-area-inset-bottom)); z-index: 36; display: flex; align-items: center; gap: 6px; padding: 5px 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; box-shadow: var(--shadow); }
 .readerbar .icon-btn { width: 42px; height: 42px; } .readerbar .icon-btn.big { width: 48px; height: 48px; }
 .readerbar .icon-btn:disabled { opacity: .45; cursor: not-allowed; }
-.main:has(.readerbar) { padding-bottom: 130px; }
-body:has(.readerbar) .player { bottom: calc(78px + env(safe-area-inset-bottom)); } /* the now-playing strip sits just above the reader's bar */
+body:not(:has(.player)) .main:has(.readerbar) { padding-bottom: 0; } /* keep room under the text only while the player shows */
+body:has(.player) .readerbar { bottom: calc(84px + env(safe-area-inset-bottom)); } /* stay clear of the now-playing strip */
 .sheet-title { margin: 0 0 10px; font-size: 1rem; }
 .layouts { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
 .layout { border: 1px solid var(--line); border-radius: 12px; }
@@ -281,7 +282,6 @@ body:has(.readerbar) .player { bottom: calc(78px + env(safe-area-inset-bottom));
   :root { --ar: .82; }
   .player { bottom: 0; width: 100%; border-radius: 16px 16px 0 0; border-width: 1px 0 0; padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); }
   .toast { bottom: calc(84px + env(safe-area-inset-bottom)); }
-  body:has(.readerbar) .player { width: calc(100% - 16px); border-radius: 16px; border-width: 1px; padding-bottom: 8px; }
   .ayah-links { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; gap: 14px; }
   .ayah-links button { white-space: nowrap; padding: 6px 0; }
   .modal-wrap { padding: 0; align-items: flex-end; }
