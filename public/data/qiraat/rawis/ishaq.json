@@ -1,0 +1,19 @@
+{
+  "_rawi": "ishaq",
+  "_qiraa": "khalaf",
+  "_counting_system_associated_with_qari": "kufi",
+  "_counting_system_printed": null,
+  "_printed_edition": null,
+  "_differs_from_association": null,
+  "_counting_system": "kufi",
+  "_mushaf_id": null,
+  "_mapping_file_associated_with_qari": null,
+  "_mapping_file_printed": null,
+  "_mapping_file": null,
+  "_deprecated": {
+    "_counting_system": "Renamed to _counting_system_associated_with_qari. The value and its meaning are unchanged: it is the count attributed to the qāriʾ, never the count a printing carries. Read _counting_system_printed for that.",
+    "_mapping_file": "Renamed to _mapping_file_associated_with_qari. To renumber against the muṣḥaf actually printed for this rāwī, use _mapping_file_printed."
+  },
+  "_note": "ishaq uses the Kufan counting system, so ayah numbers are identical to Hafs.",
+  "_printed_note": "No printing of ishaq has been measured, so _counting_system_printed is null. Absence means unmeasured, not that the printing follows the attributed count."
+}
