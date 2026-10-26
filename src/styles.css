@@ -312,7 +312,6 @@ body:has(.player) .readerbar { bottom: calc(84px + env(safe-area-inset-bottom));
 .focus-exit { display: none; }
 html.focus .topbar, html.focus .readerbar, html.focus .surah-intro, html.focus .page-nav, html.focus .page .hint, html.focus .player { display: none; }
 html.focus .main { min-height: 0; padding-bottom: 0; }
-html.focus .reader { --fill: calc(100dvh - 64px); }
 html.focus .page { max-width: none; padding: 6px 6px calc(54px + env(safe-area-inset-bottom)); }
 html.focus .focus-exit { display: grid; position: fixed; left: 50%; bottom: calc(8px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 40; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
 
@@ -328,7 +327,13 @@ html.focus .focus-exit { display: grid; position: fixed; left: 50%; bottom: calc
   .mushaf-page.h17-sheet { width: 100%; padding: 0; border: 0; background: none; box-shadow: none; }
   /* The printed frame's artwork would take a third of a phone's width: there it becomes a thin gold double line */
   .h17-sheet > .ornament { width: 100% !important; height: var(--fill) !important; }
-  .h17-sheet .ornament-art { display: none; }
+  .h17-sheet > .ornament > .ornament-art { display: none; } /* the frame only: surah banners and verse markers keep theirs */
   .h17-sheet > .ornament > .ornament-slot { inset: 0 !important; width: auto !important; height: auto !important; border: 4px double var(--gold); border-radius: 6px; padding: 6px; }
   .mushaf-page.h17-plain, .continuous .mushaf-page.h17-plain { padding: 8px 6px; }
 }
+
+/* Full screen on a page layout: the page takes the whole screen edge to edge, and on a single page the exit button waits below it, as on quranwbw */
+html.focus .reader:has(.mushaf-wrap) { --fill: calc(100dvh - 8px); }
+html.focus .reader .page:has(.mushaf-wrap) { padding: 4px 0 0; }
+html.focus .mushaf-page { border: 0; border-radius: 0; background: none; box-shadow: none; }
+html.focus .reader:has(.mushaf-wrap.fill) .focus-exit { position: static; transform: none; margin: 8px auto calc(12px + env(safe-area-inset-bottom)); }
