@@ -31,7 +31,7 @@ export default function App() {
   const view = parts[0] ?? "";
   return (
     <div className="app">
-      <header className="topbar">
+      {view !== "surah" && <header className="topbar">
         <button className="icon-btn" onClick={() => setNav(true)} aria-label="Open navigation"><Icon name="menu" /></button>
         <button className="brand" onClick={() => go("/")}>
           <span className="brand-mark" aria-hidden="true">۞</span> QuranTech <span className="brand-sub">Reader</span>
@@ -45,14 +45,14 @@ export default function App() {
           <button className="icon-btn" onClick={() => go("/search")} aria-label="Search"><Icon name="search" /></button>
           <button className="icon-btn" onClick={() => setPrefs(true)} aria-label="Settings"><Icon name="settings" /></button>
         </div>
-      </header>
+      </header>}
 
       <NavDrawer open={nav} onClose={() => setNav(false)} />
       <SettingsDrawer open={prefs} onClose={() => setPrefs(false)} />
 
       <main className="main">
         {view === "" && <Home />}
-        {view === "surah" && <Reader />}
+        {view === "surah" && <Reader onMenu={() => setNav(true)} onSettings={() => setPrefs(true)} />}
         {view === "search" && <SearchView />}
         {view === "qiraat" && <QiraatView />}
         {view === "tajweed" && <TajweedView />}

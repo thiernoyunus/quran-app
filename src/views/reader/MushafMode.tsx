@@ -14,14 +14,12 @@ export function MushafMode({ surah, page: pageParam, onSelect }: { surah: number
   const { settings } = useStore();
   const p = usePlayer();
   // quran-svg has 5 of the 7 riwayat; fall back to Hafs for the other two.
-  const [riwayah, setRiwayah] = useState<Riwayah>(WITH_PAGES.some((r) => r.id === settings.riwayah) ? settings.riwayah : "hafs");
+  const riwayah: Riwayah = WITH_PAGES.some((r) => r.id === settings.riwayah) ? settings.riwayah : "hafs";
   const edition = RIWAYAT.find((r) => r.id === riwayah)!.svg!;
   const [page, setPage] = useState<number | null>(pageParam);
   const [selected, setSelected] = useState<string | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const host = useRef<HTMLDivElement>(null);
-
-  useEffect(() => { if (WITH_PAGES.some((r) => r.id === settings.riwayah)) setRiwayah(settings.riwayah); }, [settings.riwayah]);
 
   // Find the surah's first page in this mushaf (page numbers differ between mushafs).
   useEffect(() => {
@@ -74,17 +72,12 @@ export function MushafMode({ surah, page: pageParam, onSelect }: { surah: number
   return (
     <div className="mushaf-wrap">
       {page && (
-        <PageNav page={page} total={604} onPage={turn}>
-          <select className="pill" value={riwayah} onChange={(e) => { setRiwayah(e.target.value as Riwayah); setParam("page", null); setPage(null); }} aria-label="Mushaf">
-            {WITH_PAGES.map((r) => <option key={r.id} value={r.id}>{r.en} mushaf</option>)}
-          </select>
-        </PageNav>
+        <PageNav page={page} total={604} onPage={turn} />
       )}
       {!WITH_PAGES.some((r) => r.id === settings.riwayah) && <p className="hint center">quran-svg has printed pages for 5 riwayat; showing Hafs instead of {settings.riwayah}.</p>}
       <div className={`mushaf-page ${status}`} ref={host} onClick={onClick} />
       {status === "loading" && <p className="muted center">Loading page…</p>}
       {status === "error" && <p className="error center">This page could not be downloaded.</p>}
-      <p className="hint center">Tap any ayah. Each ayah is one shape on the page (KFGQPC artwork; ayah shapes CC BY 4.0, quran-svg v1.1.1).</p>
     </div>
   );
 }

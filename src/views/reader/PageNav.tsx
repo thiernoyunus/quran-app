@@ -1,9 +1,8 @@
-// Page turner shared by the three page modes. Arabic books open right-to-left,
+// Page turner shared by the page layouts (the reader's bottom bar sends it "turn" events). Arabic books open right-to-left,
 // so the next page sits on the left (and the left arrow key turns forward).
-import { useEffect } from "react";
-import { Icon } from "../../components/Icon";
+import { useEffect, type ReactNode } from "react";
 
-export function PageNav({ page, total, onPage, children }: { page: number; total: number; onPage: (p: number) => void; children?: React.ReactNode }) {
+export function PageNav({ page, total, onPage, children }: { page: number; total: number; onPage: (p: number) => void; children?: ReactNode }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.target as HTMLElement).closest("input,select,textarea")) return;
@@ -18,20 +17,19 @@ export function PageNav({ page, total, onPage, children }: { page: number; total
       const dx = e.changedTouches[0].clientX - start.x, dy = e.changedTouches[0].clientY - start.y;
       if (Math.abs(dx) > 60 && Math.abs(dx) > 2 * Math.abs(dy)) { if (dx > 0 && page < total) onPage(page + 1); if (dx < 0 && page > 1) onPage(page - 1); }
     };
+    // The reader's bottom bar asks for a page turn: 1 forward, -1 back.
+    const onTurn = (e: Event) => { const n = page + (e as CustomEvent<number>).detail; if (n >= 1 && n <= total) onPage(n); };
+    addEventListener("turn", onTurn);
     addEventListener("keydown", onKey);
     addEventListener("touchstart", onStart, { passive: true });
     addEventListener("touchend", onEnd);
-    return () => { removeEventListener("keydown", onKey); removeEventListener("touchstart", onStart); removeEventListener("touchend", onEnd); };
+    return () => { removeEventListener("turn", onTurn); removeEventListener("keydown", onKey); removeEventListener("touchstart", onStart); removeEventListener("touchend", onEnd); };
   }, [page, total, onPage]);
 
   return (
     <div className="page-nav">
-      <button className="btn" disabled={page >= total} onClick={() => onPage(page + 1)} aria-label="Next page"><Icon name="chevronLeft" size={14} /> <span className="lbl">Next</span></button>
-      <div className="row-inline">
-        <label className="muted small">Page <input className="page-input" type="number" min={1} max={total} value={page} onChange={(e) => { const v = Number(e.target.value); if (v >= 1 && v <= total) onPage(v); }} /> of {total}</label>
-        {children}
-      </div>
-      <button className="btn" disabled={page <= 1} onClick={() => onPage(page - 1)} aria-label="Previous page"><span className="lbl">Previous</span> <Icon name="chevronRight" size={14} /></button>
+      <label className="muted small">Page <input className="page-input" type="number" min={1} max={total} value={page} onChange={(e) => { const v = Number(e.target.value); if (v >= 1 && v <= total) onPage(v); }} /> of {total}</label>
+      {children}
     </div>
   );
 }

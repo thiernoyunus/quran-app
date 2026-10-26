@@ -5,18 +5,6 @@ import { useChapters, useMushaf } from "../lib/hooks";
 import { riwayahInfo } from "../lib/quran";
 import { Icon } from "../components/Icon";
 
-// Every QuranTech block, one door each, so nothing in the app is hidden.
-const FEATURES = [
-  { title: "Verse by verse", block: "quran-text", body: "Arabic in 7 riwayat, translations, word meanings, audio, tafsir.", to: ["/surah/1", { mode: "verse" }] },
-  { title: "Reading", block: "quran-text", body: "Flowing Arabic, broken into the same lines as the printed page.", to: ["/surah/1", { mode: "reading" }] },
-  { title: "Mushaf pages", block: "quran-svg", body: "The real printed page in 5 riwayat. Tap any ayah.", to: ["/surah/1", { mode: "mushaf" }] },
-  { title: "Tap a word", block: "quran-svg-elements", body: "Every word on the printed page is tappable: meaning and sound.", to: ["/surah/1", { mode: "words" }] },
-  { title: "Fast page", block: "quran-engine", body: "The page drawn on a canvas by the rendering engine. Light and quick.", to: ["/surah/1", { mode: "engine" }] },
-  { title: "Memorize", block: "quran-engine", body: "Hide the words, recite, and reveal them one by one.", to: ["/surah/1", { mode: "memorize" }] },
-  { title: "Tajweed", block: "quran-tajweed", body: "Colour-coded recitation rules, with every rule explained.", to: ["/tajweed", {}] },
-  { title: "Riwayat & counting", block: "qiraat-ayah-map", body: "Why 2:255 isn't always 2:255: convert across 6 counting systems.", to: ["/qiraat", {}] },
-  { title: "Ornaments", block: "quran-assets", body: "Surah banners, ayah roundels and page frames, with their licences.", to: ["/ornaments", {}] },
-] as const;
 
 export function Home() {
   const { lastRead, bookmarks } = useStore();
@@ -34,8 +22,7 @@ export function Home() {
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search the Quran in Arabic or English…" aria-label="Search the Quran" />
         </form>
         <div className="row-inline center">
-          <button className="pill gold" onClick={() => document.getElementById("surahs")?.scrollIntoView({ behavior: "smooth" })}>Surah list</button>
-          <button className="pill" onClick={() => go("/surah/2", { ayah: 255 })}>Ayat al-Kursi</button>
+          <button className="pill gold" onClick={() => go("/surah/2", { ayah: 255 })}>Ayat al-Kursi</button>
           <button className="pill" onClick={() => go("/surah/36")}>Ya-Sin</button>
           <button className="pill" onClick={() => go("/surah/67")}>Al-Mulk</button>
           <button className="pill" onClick={() => go("/surah/18")}>Al-Kahf</button>
@@ -70,19 +57,6 @@ export function Home() {
           )}
         </section>
       )}
-
-      <section className="section">
-        <h3 className="section-title">Everything in QuranTech</h3>
-        <div className="feature-grid">
-          {FEATURES.map((f) => (
-            <button key={f.title} className="card feature" onClick={() => go(f.to[0], f.to[1])}>
-              <span className="tag">{f.block}</span>
-              <b>{f.title}</b>
-              <span className="muted small">{f.body}</span>
-            </button>
-          ))}
-        </div>
-      </section>
 
       <section className="section" id="surahs">
         <div className="row-inline between">

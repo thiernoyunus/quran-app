@@ -23,6 +23,7 @@ export interface Settings {
   tafsir: string; // spa5k tafsir slug
   markerStyle: string; // quran-assets ayah marker id
   markerColor: string;
+  h17Border: boolean; // Mushaf 17: draw the printed frame
 }
 
 const DEFAULTS: Settings = {
@@ -41,6 +42,7 @@ const DEFAULTS: Settings = {
   tafsir: "en-tafisr-ibn-kathir",
   markerStyle: "ayah-markers/font-004-regular",
   markerColor: "#2CA4AB",
+  h17Border: true,
 };
 
 interface State {

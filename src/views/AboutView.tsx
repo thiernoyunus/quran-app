@@ -1,3 +1,20 @@
+import { go } from "../lib/router";
+
+// Every QuranTech block, one door each, so nothing in the app is hidden.
+const FEATURES = [
+  { title: "Verse by verse", block: "quran-text", body: "Arabic in 7 riwayat, translations, word meanings, audio, tafsir.", to: ["/surah/1", { mode: "verse" }] },
+  { title: "Reading", block: "quran-text", body: "Flowing Arabic, broken into the same lines as the printed page.", to: ["/surah/1", { mode: "reading" }] },
+  { title: "Continuous", block: "quran-text", body: "The Madinah Mushaf's pages one under another: just scroll.", to: ["/surah/1", { mode: "continuous" }] },
+  { title: "Mushaf pages", block: "quran-svg", body: "The real printed page in 5 riwayat. Tap any ayah.", to: ["/surah/1", { mode: "mushaf" }] },
+  { title: "Mushaf 17", block: "quran-text + quran-assets", body: "The 17-line Egyptian Mushaf al-Huffaz, drawn line for line.", to: ["/surah/1", { mode: "huffaz" }] },
+  { title: "Tap a word", block: "quran-svg-elements", body: "Every word on the printed page is tappable: meaning and sound.", to: ["/surah/1", { mode: "words" }] },
+  { title: "Fast page", block: "quran-engine", body: "The page drawn on a canvas by the rendering engine. Light and quick.", to: ["/surah/1", { mode: "engine" }] },
+  { title: "Memorize", block: "quran-engine", body: "Hide the words, recite, and reveal them one by one.", to: ["/surah/1", { mode: "memorize" }] },
+  { title: "Tajweed", block: "quran-tajweed", body: "Colour-coded recitation rules, with every rule explained.", to: ["/tajweed", {}] },
+  { title: "Riwayat & counting", block: "qiraat-ayah-map", body: "Why 2:255 isn't always 2:255: convert across 6 counting systems.", to: ["/qiraat", {}] },
+  { title: "Ornaments", block: "quran-assets", body: "Surah banners, ayah roundels and page frames, with their licences.", to: ["/ornaments", {}] },
+] as const;
+
 // Where everything comes from. Credits are part of the adab of handling Quran data.
 const ROWS: [string, string, string, string][] = [
   ["Arabic text, 7 riwayat, fonts", "quran-text 0.1.0 (Quran.ws)", "CC BY 4.0 + KFGQPC terms for the text", "https://quran.ws/blocks/quran-text"],
@@ -23,6 +40,20 @@ export function AboutView() {
         <li>Tafsir is shown as published by its author, never AI-written.</li>
         <li>Every data source is pinned to a fixed version, so the text can't change silently.</li>
       </ul>
+      <section className="section">
+        <h3 className="section-title">Everything in QuranTech</h3>
+        <div className="feature-grid">
+          {FEATURES.map((f) => (
+            <button key={f.title} className="card feature" onClick={() => go(f.to[0], f.to[1])}>
+              <span className="tag">{f.block}</span>
+              <b>{f.title}</b>
+              <span className="muted small">{f.body}</span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <h3 className="section-title">Where everything comes from</h3>
       <div className="table-scroll"><table className="table">
         <thead><tr><th>What</th><th>Source</th><th>Licence</th></tr></thead>
         <tbody>{ROWS.map(([what, src, lic, url]) => <tr key={what}><td>{what}</td><td><a href={url} target="_blank" rel="noreferrer">{src}</a></td><td className="small muted">{lic}</td></tr>)}</tbody>
