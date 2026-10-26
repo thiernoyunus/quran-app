@@ -26,12 +26,8 @@ export function PageNav({ page, total, onPage, children }: { page: number; total
     return () => { removeEventListener("turn", onTurn); removeEventListener("keydown", onKey); removeEventListener("touchstart", onStart); removeEventListener("touchend", onEnd); };
   }, [page, total, onPage]);
 
-  return (
-    <div className="page-nav">
-      <label className="muted small">Page <input className="page-input" type="number" min={1} max={total} value={page} onChange={(e) => { const v = Number(e.target.value); if (v >= 1 && v <= total) onPage(v); }} /> of {total}</label>
-      {children}
-    </div>
-  );
+  // The page number is in the reader's title, and the Go-to panel jumps to any page: only a layout's own options show here.
+  return children ? <div className="page-nav">{children}</div> : null;
 }
 
 export const pad3 = (n: number) => String(n).padStart(3, "0");

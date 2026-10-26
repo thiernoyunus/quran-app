@@ -147,12 +147,6 @@ export function Reader({ onMenu, onSettings }: { onMenu: () => void; onSettings:
         {mode === "words" && <WordsMode surah={surah} page={madinahPage} onSelect={setSel} />}
         {(mode === "engine" || mode === "memorize") && <EngineMode surah={surah} page={madinahPage} memorize={mode === "memorize"} onSelect={setSel} />}
 
-        {!turnsPages && (
-          <div className="surah-nav">
-            {surah < 114 && <button className="btn" onClick={() => go(`/surah/${surah + 1}`, { mode })}><Icon name="chevronLeft" size={14} /> Next surah</button>}
-            <button className="btn" onClick={() => scrollTo({ top: 0, behavior: "smooth" })}>Beginning of surah</button>
-          </div>
-        )}
       </div>
 
       <nav className="readerbar" aria-label="Reader controls">

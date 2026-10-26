@@ -91,11 +91,11 @@ export function Huffaz17Mode({ m, surah, ayah, page: pageParam, onSelect }: { m:
   if (!b || !page) return <p className="muted center">Loading page…</p>;
   const sheet = <Sheet m={m} b={b} page={page} onSelect={onSelect} />;
   return (
-    <div className="mushaf-wrap">
+    <div className="mushaf-wrap fill">
       <PageNav page={page} total={b.L.last_page} onPage={turn} />
       {settings.h17Border ? (
         <div className="mushaf-page h17-sheet">
-          <Ornament path={FRAME} height="var(--h17-h, min(86vh, calc(min(94vw, 620px) / 0.69)))" color="var(--gold)" label={`${b.name}, page ${page}`}>{sheet}</Ornament>
+          <Ornament path={FRAME} height="min(var(--fill) - 18px, calc(min(100vw - 8px, 620px) / 0.69))" color="var(--gold)" label={`${b.name}, page ${page}`}>{sheet}</Ornament>
         </div>
       ) : (
         <div className="mushaf-page h17-plain" aria-label={`${b.name}, page ${page}`}>{sheet}</div>

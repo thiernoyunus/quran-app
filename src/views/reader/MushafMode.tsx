@@ -70,7 +70,7 @@ export function MushafMode({ surah, page: pageParam, onSelect }: { surah: number
   };
 
   return (
-    <div className="mushaf-wrap">
+    <div className="mushaf-wrap fill">
       {page && (
         <PageNav page={page} total={604} onPage={turn} />
       )}

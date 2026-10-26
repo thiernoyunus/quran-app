@@ -180,7 +180,6 @@ body:has(.player) .readerbar { bottom: calc(84px + env(safe-area-inset-bottom));
 .ayah-links { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 6px; }
 .ayah-links button { display: inline-flex; gap: 5px; align-items: center; color: var(--muted); font-size: .82rem; }
 .ayah-links button:hover { color: var(--gold); }
-.surah-nav { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 28px 0; }
 
 .reading { text-align: center; line-height: 2.3; }
 .reading-page { padding: 8px 0 16px; border-bottom: 1px dashed var(--line); margin-bottom: 8px; }
@@ -190,11 +189,10 @@ body:has(.player) .readerbar { bottom: calc(84px + env(safe-area-inset-bottom));
 
 .mushaf-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 .page-nav { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; max-width: 640px; flex-wrap: wrap; }
-.page-input { width: 64px; padding: 4px 6px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface-2); color: var(--text); font: inherit; text-align: center; }
 .mushaf-page { width: 100%; max-width: 560px; aspect-ratio: 345 / 550; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; box-shadow: var(--shadow); }
 .mushaf-page.loading { opacity: .4; }
-.mushaf-page svg { width: 100%; height: 100%; display: block; }
-.mushaf-page svg path:not(.ayahPolygon) { fill: var(--ink); }
+.mushaf-page > svg { width: 100%; height: 100%; display: block; } /* the printed page itself, not the ornaments drawn inside Mushaf 17 */
+.mushaf-page > svg path:not(.ayahPolygon) { fill: var(--ink); }
 .mushaf-page .ayahPolygon { fill: var(--gold); fill-opacity: 0; cursor: pointer; transition: fill-opacity .15s; }
 .mushaf-page .ayahPolygon:hover { fill-opacity: .12; }
 .mushaf-page .ayahPolygon.playing { fill-opacity: .22; } .mushaf-page .ayahPolygon.sel { fill-opacity: .32; }
@@ -294,7 +292,6 @@ body:has(.player) .readerbar { bottom: calc(84px + env(safe-area-inset-bottom));
 
 /* Mushaf 17: a printed-looking page — frame, running head, 17 justified lines, page number */
 .mushaf-page.h17-sheet { width: auto; max-width: none; aspect-ratio: auto; padding: 8px; display: flex; justify-content: center; }
-.mushaf-page.h17-sheet svg path { fill: currentColor; }
 .h17-sheet > .ornament > .ornament-slot { display: block; } /* a grid here would widen to fit the longest line and spill past the frame */
 .mushaf-page.h17-plain { padding: 18px 22px; }
 .continuous { gap: 14px; }
@@ -315,8 +312,23 @@ body:has(.player) .readerbar { bottom: calc(84px + env(safe-area-inset-bottom));
 .focus-exit { display: none; }
 html.focus .topbar, html.focus .readerbar, html.focus .surah-intro, html.focus .page-nav, html.focus .page .hint, html.focus .player { display: none; }
 html.focus .main { min-height: 0; padding-bottom: 0; }
+html.focus .reader { --fill: calc(100dvh - 64px); }
 html.focus .page { max-width: none; padding: 6px 6px calc(54px + env(safe-area-inset-bottom)); }
 html.focus .focus-exit { display: grid; position: fixed; left: 50%; bottom: calc(8px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 40; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
-html.focus .mushaf-page:not(.h17-sheet) { width: min(100%, calc((100dvh - 64px) * 345 / 550)); max-width: none; }
-html.focus { --h17-h: min(calc(100dvh - 64px), calc((100vw - 28px) / 0.69)); }
-html.focus .mushaf-page.h17-plain { aspect-ratio: auto; height: calc(100dvh - 64px); width: min(100%, calc((100dvh - 64px) * .7)); } /* drawn text, so it can take the screen's shape */
+
+/* Page layouts fill the screen between the top bar and the bottom bar: no empty strip under the page */
+.reader { --fill: calc(100dvh - 150px); }
+.reader .page:has(.mushaf-wrap) { padding-top: 4px; padding-bottom: 0; }
+.mushaf-wrap.fill { min-height: var(--fill); justify-content: center; }
+.mushaf-wrap.fill .mushaf-page:not(.h17-sheet) { width: min(100%, calc(var(--fill) * 345 / 550)); max-width: none; }
+.mushaf-wrap.fill .mushaf-page.h17-plain { aspect-ratio: auto; height: var(--fill); width: min(100%, calc(var(--fill) * .7)); } /* drawn text, so it can take the screen's shape */
+.continuous .mushaf-page.h17-plain { min-height: var(--fill); }
+@media (max-width: 600px) {
+  .reader .page:has(.mushaf-wrap) { padding-inline: 4px; } /* every pixel of width goes to the words */
+  .mushaf-page.h17-sheet { width: 100%; padding: 0; border: 0; background: none; box-shadow: none; }
+  /* The printed frame's artwork would take a third of a phone's width: there it becomes a thin gold double line */
+  .h17-sheet > .ornament { width: 100% !important; height: var(--fill) !important; }
+  .h17-sheet .ornament-art { display: none; }
+  .h17-sheet > .ornament > .ornament-slot { inset: 0 !important; width: auto !important; height: auto !important; border: 4px double var(--gold); border-radius: 6px; padding: 6px; }
+  .mushaf-page.h17-plain, .continuous .mushaf-page.h17-plain { padding: 8px 6px; }
+}
